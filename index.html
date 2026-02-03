@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Veux-tu être ma Valentine ? 💖</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #ff9ec8 0%, #ff6b9d 50%, #ff1744 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Cœurs animés en arrière-plan */
+        .heart {
+            position: absolute;
+            font-size: 20px;
+            color: rgba(255, 255, 255, 0.6);
+            animation: float 6s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 0.6;
+            }
+            50% {
+                transform: translateY(-30px) rotate(15deg);
+                opacity: 1;
+            }
+        }
+
+        .heart:nth-child(1) { left: 10%; animation-delay: 0s; }
+        .heart:nth-child(2) { left: 20%; animation-delay: 1s; }
+        .heart:nth-child(3) { left: 30%; animation-delay: 2s; }
+        .heart:nth-child(4) { left: 40%; animation-delay: 0.5s; }
+        .heart:nth-child(5) { left: 50%; animation-delay: 1.5s; }
+        .heart:nth-child(6) { left: 60%; animation-delay: 2.5s; }
+        .heart:nth-child(7) { left: 70%; animation-delay: 0.8s; }
+        .heart:nth-child(8) { left: 80%; animation-delay: 1.8s; }
+        .heart:nth-child(9) { left: 90%; animation-delay: 3s; }
+
+        .container {
+            text-align: center;
+            z-index: 10;
+            padding: 20px;
+            max-width: 600px;
+            width: 100%;
+        }
+
+        h1 {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            color: white;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.3);
+            margin-bottom: 40px;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        .buttons-container {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 50px;
+        }
+
+        .btn {
+            padding: 20px 40px;
+            font-size: clamp(1.2rem, 3vw, 1.8rem);
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .btn-yes {
+            background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+            color: white;
+            transform: scale(1);
+        }
+
+        .btn-yes:hover {
+            transform: scale(1.1);
+            box-shadow: 0 12px 30px rgba(76, 175, 80, 0.5);
+        }
+
+        .btn-yes:active {
+            transform: scale(0.95);
+        }
+
+        .btn-no {
+            background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%);
+            color: white;
+            position: relative;
+            transition: transform 0.1s ease-out;
+        }
+
+        .btn-no:hover {
+            transform: scale(1.05);
+        }
+
+        .celebration {
+            display: none;
+            margin-top: 40px;
+            animation: celebrationAppear 0.8s ease-out;
+        }
+
+        .celebration.active {
+            display: block;
+        }
+
+        @keyframes celebrationAppear {
+            0% {
+                opacity: 0;
+                transform: scale(0.5) rotate(-10deg);
+            }
+            50% {
+                transform: scale(1.1) rotate(5deg);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) rotate(0deg);
+            }
+        }
+
+        .celebration-text {
+            font-size: clamp(1.5rem, 4vw, 2.5rem);
+            color: white;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.3);
+            margin-bottom: 30px;
+            animation: bounce 1s ease-in-out infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        .gif-container {
+            margin-top: 30px;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .gif-container img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: #ff1744;
+            position: absolute;
+            animation: confettiFall 3s linear infinite;
+        }
+
+        @keyframes confettiFall {
+            0% {
+                transform: translateY(-100vh) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .buttons-container {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .btn {
+                width: 80%;
+                max-width: 250px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Cœurs flottants en arrière-plan -->
+    <div class="heart">💖</div>
+    <div class="heart">💕</div>
+    <div class="heart">💗</div>
+    <div class="heart">💓</div>
+    <div class="heart">💝</div>
+    <div class="heart">💘</div>
+    <div class="heart">💖</div>
+    <div class="heart">💕</div>
+    <div class="heart">💗</div>
+
+    <div class="container">
+        <h1>Veux-tu être ma Valentine ? 💖</h1>
+        
+        <div class="buttons-container">
+            <button class="btn btn-yes" id="btnYes">💘 OUI</button>
+            <button class="btn btn-no" id="btnNo">💔 NON</button>
+        </div>
+
+        <div class="celebration" id="celebration">
+            <div class="celebration-text">
+                OUIII TU AS DIT OUI JE SUIS TROP CONTENT !!!! 💖😍🎉
+            </div>
+            <div class="gif-container">
+                <img src="https://media.giphy.com/media/26u4cqiYI30juCOGY/giphy.gif" alt="Celebration GIF">
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Récupération des éléments
+        const btnYes = document.getElementById('btnYes');
+        const btnNo = document.getElementById('btnNo');
+        const celebration = document.getElementById('celebration');
+
+        // Fonction pour générer des confettis
+        function createConfetti() {
+            const colors = ['#ff1744', '#ff6b9d', '#ff9ec8', '#ffffff', '#ffeb3b'];
+            const confettiCount = 50;
+
+            for (let i = 0; i < confettiCount; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    confetti.style.left = Math.random() * 100 + '%';
+                    confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.animationDelay = Math.random() * 2 + 's';
+                    confetti.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                    document.body.appendChild(confetti);
+
+                    // Supprimer le confetti après l'animation
+                    setTimeout(() => {
+                        confetti.remove();
+                    }, 5000);
+                }, i * 50);
+            }
+        }
+
+        // Comportement du bouton OUI
+        btnYes.addEventListener('click', function() {
+            // Afficher la célébration
+            celebration.classList.add('active');
+            
+            // Générer des confettis
+            createConfetti();
+            
+            // Cacher les boutons
+            document.querySelector('.buttons-container').style.display = 'none';
+            
+            // Faire défiler vers le haut pour voir la célébration
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+
+        // Comportement du bouton NON (qui fuit)
+        btnNo.addEventListener('mouseenter', function(e) {
+            // Empêcher le clic
+            e.preventDefault();
+            
+            // Calculer les nouvelles positions aléatoires
+            const maxX = window.innerWidth - btnNo.offsetWidth - 20;
+            const maxY = window.innerHeight - btnNo.offsetHeight - 20;
+            
+            // Générer des positions aléatoires mais visibles
+            const randomX = Math.random() * maxX;
+            const randomY = Math.random() * maxY;
+            
+            // Appliquer la transition fluide
+            btnNo.style.transition = 'all 0.5s ease-out';
+            btnNo.style.position = 'absolute';
+            btnNo.style.left = randomX + 'px';
+            btnNo.style.top = randomY + 'px';
+        });
+
+        // Aussi au touch (mobile)
+        btnNo.addEventListener('touchstart', function(e) {
+            e.preventDefault();
+            
+            const maxX = window.innerWidth - btnNo.offsetWidth - 20;
+            const maxY = window.innerHeight - btnNo.offsetHeight - 20;
+            
+            const randomX = Math.random() * maxX;
+            const randomY = Math.random() * maxY;
+            
+            btnNo.style.transition = 'all 0.5s ease-out';
+            btnNo.style.position = 'absolute';
+            btnNo.style.left = randomX + 'px';
+            btnNo.style.top = randomY + 'px';
+        });
+
+        // Empêcher le clic sur le bouton NON
+        btnNo.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            // Faire encore plus fuir le bouton
+            const maxX = window.innerWidth - btnNo.offsetWidth - 20;
+            const maxY = window.innerHeight - btnNo.offsetHeight - 20;
+            
+            const randomX = Math.random() * maxX;
+            const randomY = Math.random() * maxY;
+            
+            btnNo.style.transition = 'all 0.3s ease-out';
+            btnNo.style.position = 'absolute';
+            btnNo.style.left = randomX + 'px';
+            btnNo.style.top = randomY + 'px';
+        });
+
+        // Animation supplémentaire : faire bouger le bouton NON de manière subtile
+        let noButtonInterval;
+        btnNo.addEventListener('mouseenter', function() {
+            // Arrêter l'intervalle précédent s'il existe
+            if (noButtonInterval) {
+                clearInterval(noButtonInterval);
+            }
+            
+            // Faire bouger le bouton légèrement toutes les 2 secondes
+            noButtonInterval = setInterval(() => {
+                const currentLeft = parseInt(btnNo.style.left) || 0;
+                const currentTop = parseInt(btnNo.style.top) || 0;
+                
+                const maxX = window.innerWidth - btnNo.offsetWidth - 20;
+                const maxY = window.innerHeight - btnNo.offsetHeight - 20;
+                
+                const newX = Math.max(0, Math.min(maxX, currentLeft + (Math.random() - 0.5) * 100));
+                const newY = Math.max(0, Math.min(maxY, currentTop + (Math.random() - 0.5) * 100));
+                
+                btnNo.style.left = newX + 'px';
+                btnNo.style.top = newY + 'px';
+            }, 2000);
+        });
+
+        // Ajouter des cœurs supplémentaires lors du survol du bouton OUI
+        btnYes.addEventListener('mouseenter', function() {
+            for (let i = 0; i < 5; i++) {
+                setTimeout(() => {
+                    const heart = document.createElement('div');
+                    heart.className = 'heart';
+                    heart.textContent = '💖';
+                    heart.style.left = (Math.random() * 100) + '%';
+                    heart.style.top = (Math.random() * 100) + '%';
+                    heart.style.fontSize = (Math.random() * 20 + 15) + 'px';
+                    document.body.appendChild(heart);
+                    
+                    setTimeout(() => {
+                        heart.remove();
+                    }, 3000);
+                }, i * 100);
+            }
+        });
+    </script>
+</body>
+</html>
